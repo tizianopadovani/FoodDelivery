@@ -1,0 +1,26 @@
+<div>
+  <ul>
+    <li *ngFor="let restaurant of restaurantList; let index = index">
+      <div>
+        <h2>{{restaurant.name}}</h2>
+      </div>
+      <div>
+        <ul>
+          <li *ngFor="let menu of restaurantList[index].menu">
+            <h3>{{menu.name}}</h3>
+            <p>{{menu.ingredients}}</p>
+            <p>{{menu.price}} €</p>
+            <button class="btn btn-success" (click) = "postNewDish(index)">Add Menu</button>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <p>{{restaurant.address}}</p>
+        <p>TEL. {{restaurant.phone}}</p>
+      </div>
+    </li>
+  </ul>
+</div>
+<div>
+ <button class="btn btn-primary" (click)="postNewRestaurant()"> Add Restaurant</button>
+</div>
