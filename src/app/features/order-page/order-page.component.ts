@@ -5,7 +5,6 @@ import {OrderService} from "../../core/services/order-service/order.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Restaurant} from "../../core/models/restaurant";
 import {RestaurantService} from "../../core/services/restaurant-service/restaurant.service";
-import {Menu} from "../../core/models/menu";
 
 
 @Component({
@@ -16,10 +15,11 @@ import {Menu} from "../../core/models/menu";
 export class OrderPageComponent implements OnInit, OnDestroy {
 
   ordersList : Orders[];
-  restaurantList : Restaurant[] = [];
+  restaurantList : Restaurant[];
 
   orderSubscription : Subscription;
   postOrderSubscription : Subscription;
+  manageOrderSubscription : Subscription;
 
   orderForm: FormGroup;
   order: Orders;
@@ -59,11 +59,44 @@ export class OrderPageComponent implements OnInit, OnDestroy {
     const newOrder = this.orderForm.value as Orders;
     this.ordersList = [...this.ordersList, newOrder];
     this.postNewOrder(newOrder);
-    this.orderForm.reset()
+    this.orderForm.reset();
   }
 
+  manageOrder(){
+
+    if(!this.order || this.ordersList.includes(this.order)){
+      this.addOrder();
+    }else{
+      this.editOrder(this.order.id)
+    }
+  }
+
+  deleteOrder(id: number) {
+    this.manageOrderSubscription = this.orderService.deleteOrder(id).subscribe(
+      observer => {this.getAllOrders()},
+      error => {console.log('Non è stato possibile cancellare questo ordine')},
+      () => {console.log('Ordine cancellato con successo!')})
+  }
+
+  editOrder(id: number) {
+    const newOrder = this.orderForm.value as Orders;
+    this.manageOrderSubscription = this.orderService.patchOrder(id, newOrder).subscribe(
+      observer => {this.getAllOrders()},
+      error => {console.log('Non è stato possibile modificare questo ordine')},
+      () => {console.log('Ordine modificato con successo!')}
+    )
+    this.orderForm.reset();
+  }
+
+  setOrder(order: Orders) {
+    this.orderForm.patchValue(order);
+    this.order = {...order};
+  }
   ngOnDestroy(): void {
     this.orderSubscription?.unsubscribe();
     this.postOrderSubscription?.unsubscribe();
+    this.manageOrderSubscription?.unsubscribe();
   }
+
+
 }

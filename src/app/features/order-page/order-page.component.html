@@ -1,10 +1,10 @@
 <div>
-  <form [formGroup]="orderForm" (ngSubmit)="addOrder()">
+  <form [formGroup]="orderForm" (ngSubmit)="manageOrder()">
     <div class="row mb-4">
       <div class="col">
         <div class="form-outline">
-          <label class="form-label" for="restaurant" formControlName="restaurant" ngDefaultControl>Restaurant:</label>
-          <select id="restaurant" [(ngModel)]="selectedRestaurant" [ngModelOptions]="{standalone: true}">
+          <label class="form-label" for="restaurant" ngDefaultControl>Restaurant:</label>
+          <select id="restaurant" formControlName="restaurant" [(ngModel)]="selectedRestaurant" >
             <option *ngFor="let restaurant of restaurantList" [ngValue]="restaurant">{{restaurant.name}}</option>
           </select>
         </div>
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary btn-block mb-4">Send your order</button>
+    <button type="submit" class="btn btn-primary btn-block mb-4">{{this.order ? "Edit Order" : "Add Order"}}</button>
   </form>
 </div>
 
@@ -43,12 +43,15 @@
     </thead>
     <tbody>
     <tr *ngFor="let order of ordersList">
-      <td>{{order.id}}</td>
-      <td>{{order.restaurant}}</td>
-      <td>{{order.menu}}</td>
-      <td>{{order.quantity}}</td>
-      <td></td>
-      <td><i class="fa fa-pencil text-danger btn"></i></td>
+      <td>{{order?.id}}</td>
+      <td>{{order?.restaurant?.name}}</td>
+      <td>{{order?.menu?.name}}</td>
+      <td>{{order?.quantity}}</td>
+      <td>{{order.menu.price * order.quantity}} €</td>
+      <td>
+        <i class="fa fa-pencil text-primary btn" (click)="setOrder(order)"></i>
+        <i class="fa fa-trash text-danger btn" (click)="deleteOrder(order.id)"></i>
+      </td>
     </tr>
     </tbody>
   </table>

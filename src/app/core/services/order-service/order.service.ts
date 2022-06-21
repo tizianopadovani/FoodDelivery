@@ -17,4 +17,14 @@ export class OrderService {
   postNewOrder(newOrder : Orders) : Observable<Orders>{
     return this.http.post<Orders>('http://localhost:3000/Orders', newOrder);
   }
+
+  patchOrder(id: number, newOrder : Orders) : Observable<Orders>{
+    return this.http.patch<Orders>('http://localhost:3000/Orders/'+id, newOrder);
+  }
+
+  deleteOrder(id : number) : Observable<Orders>{
+    return this.http.delete<Orders>('http://localhost:3000/Orders/'+id);
+  }
+
+
 }
