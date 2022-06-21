@@ -16,24 +16,24 @@ import {Menu} from "../../core/models/menu";
 export class OrderPageComponent implements OnInit, OnDestroy {
 
   ordersList : Orders[];
-  restaurantList : Restaurant[];
-  menuList : Menu[];
+  restaurantList : Restaurant[] = [];
 
   orderSubscription : Subscription;
   postOrderSubscription : Subscription;
 
   orderForm: FormGroup;
   order: Orders;
+  selectedRestaurant: Restaurant;
 
   constructor(private orderService : OrderService, private restaurantService : RestaurantService) { }
 
   ngOnInit(): void {
     this.getAllOrders();
     this.restaurantService.getAllRestaurants().subscribe(res => {this.restaurantList = res});
-    this.restaurantService.getAllRestaurants().subscribe(res => {res.map(r => this.menuList = r.menu)});
+
 
     this.orderForm = new FormGroup({
-      id: new FormControl(this.ordersList.length + 1),
+      id: new FormControl(this.ordersList?.length + 1),
       restaurant: new FormControl(''),
       menu: new FormControl(''),
       quantity: new FormControl('')

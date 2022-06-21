@@ -3,8 +3,8 @@
     <div class="row mb-4">
       <div class="col">
         <div class="form-outline">
-          <label class="form-label" for="restaurant" formControlName="restaurant">Restaurant:</label>
-          <select id="restaurant">
+          <label class="form-label" for="restaurant" formControlName="restaurant" ngDefaultControl>Restaurant:</label>
+          <select id="restaurant" [(ngModel)]="selectedRestaurant" [ngModelOptions]="{standalone: true}">
             <option *ngFor="let restaurant of restaurantList" [ngValue]="restaurant">{{restaurant.name}}</option>
           </select>
         </div>
@@ -13,7 +13,7 @@
         <div class="form-outline">
           <label class="form-label" for="menu">Menu:</label>
           <select id="menu" formControlName="menu">
-            <option *ngFor="let menu of menuList" [ngValue]="menu">{{menu.name}}</option>
+            <option *ngFor="let menu of selectedRestaurant?.menu" [ngValue]="menu">{{menu.name}}</option>
           </select>
         </div>
       </div>
