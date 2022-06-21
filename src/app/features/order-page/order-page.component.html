@@ -4,27 +4,35 @@
       <div class="col">
         <div class="form-outline">
           <label class="form-label" for="restaurant" ngDefaultControl>Restaurant:</label>
-          <select id="restaurant" formControlName="restaurant" [(ngModel)]="selectedRestaurant" >
+          <select id="restaurant" formControlName="restaurant" [(ngModel)]="selectedRestaurant" required >
             <option *ngFor="let restaurant of restaurantList" [ngValue]="restaurant">{{restaurant.name}}</option>
           </select>
+          <small *ngIf="orderForm.get('restaurant')?.invalid && (orderForm.get('restaurant')?.dirty || orderForm.get('restaurant')?.touched)"
+                 class="text-danger">*Campo obbligatorio</small>
         </div>
       </div>
       <div class="col">
         <div class="form-outline">
           <label class="form-label" for="menu">Menu:</label>
-          <select id="menu" formControlName="menu">
+          <select id="menu" formControlName="menu" required>
             <option *ngFor="let menu of selectedRestaurant?.menu" [ngValue]="menu">{{menu.name}}</option>
           </select>
+          <small *ngIf="orderForm.get('menu')?.invalid && (orderForm.get('menu')?.dirty || orderForm.get('menu')?.touched)"
+                 class="text-danger">*Campo obbligatorio</small>
         </div>
       </div>
       <div class="col">
         <div class="form-outline">
           <label class="form-label" for="quantity">Quantity:</label>
-          <input type="number" id="quantity" formControlName="quantity"/>
+          <input type="number" id="quantity" formControlName="quantity" required min="1" max="40" minlength="1" maxlength="2"/>
+          <small *ngIf="orderForm.get('quantity')?.invalid && (orderForm.get('quantity')?.dirty || orderForm.get('quantity')?.touched)"
+                 class="text-danger">*Campo obbligatorio</small>
         </div>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary btn-block mb-4">{{this.order ? "Edit Order" : "Add Order"}}</button>
+    <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="orderForm.invalid">{{this.order ? "Edit Order" : "Add Order"}}</button>
+    <small *ngIf="orderForm.touched && orderForm.invalid || orderForm.dirty && orderForm.invalid"
+           class="text-danger">*Compila tutti i campi</small>
   </form>
 </div>
 

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Orders} from "../../core/models/orders";
 import {Subscription} from "rxjs";
 import {OrderService} from "../../core/services/order-service/order.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import {Restaurant} from "../../core/models/restaurant";
 import {RestaurantService} from "../../core/services/restaurant-service/restaurant.service";
 
@@ -34,9 +34,10 @@ export class OrderPageComponent implements OnInit, OnDestroy {
 
     this.orderForm = new FormGroup({
       id: new FormControl(this.ordersList?.length + 1),
-      restaurant: new FormControl(''),
-      menu: new FormControl(''),
-      quantity: new FormControl('')
+      restaurant: new FormControl('', [Validators.required]),
+      menu: new FormControl('', [Validators.required]),
+      quantity: new FormControl('', [Validators.required, Validators.min(1), Validators.max(40),
+                                                        Validators.minLength(1), Validators.maxLength(2)])
     })
   }
 
