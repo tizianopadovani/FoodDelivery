@@ -1,0 +1,55 @@
+<div>
+  <form [formGroup]="orderForm" (ngSubmit)="addOrder()">
+    <div class="row mb-4">
+      <div class="col">
+        <div class="form-outline">
+          <label class="form-label" for="restaurant" formControlName="restaurant">Restaurant:</label>
+          <select id="restaurant">
+            <option *ngFor="let restaurant of restaurantList" [ngValue]="restaurant">{{restaurant.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <label class="form-label" for="menu">Menu:</label>
+          <select id="menu" formControlName="menu">
+            <option *ngFor="let menu of menuList" [ngValue]="menu">{{menu.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <label class="form-label" for="quantity">Quantity:</label>
+          <input type="number" id="quantity" formControlName="quantity"/>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block mb-4">Send your order</button>
+  </form>
+</div>
+
+
+<div>
+  <table class="table w-50 p-3">
+    <thead>
+    <tr>
+      <th scope="col">N°</th>
+      <th scope="col">Restaurant</th>
+      <th scope="col">Menu</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of ordersList">
+      <td>{{order.id}}</td>
+      <td>{{order.restaurant}}</td>
+      <td>{{order.menu}}</td>
+      <td>{{order.quantity}}</td>
+      <td></td>
+      <td><i class="fa fa-pencil text-danger btn"></i></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

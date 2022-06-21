@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Restaurant} from "../../core/models/restaurant";
 import {Subscription} from "rxjs";
 import {RestaurantService} from "../../core/services/restaurant-service/restaurant.service";
-import {Menu} from "../../core/models/menu";
 
 @Component({
   selector: 'app-restaurants-list',
@@ -62,12 +61,15 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
         ingredients: 'Nuovi Ingredienti',
         price: 9.99
       }
-
-    this.patchRestaurantSubscription = this.restaurantService.patchRestaurantsDish(newDish ,index).subscribe(
+    let {menu} = this.restaurantList[index];
+    menu = [...menu, newDish];
+    this.restaurantList[index].menu = menu;
+    this.postRestaurantSubscription = this.restaurantService.patchRestaurantsDish(this.restaurantList[index] ,index).subscribe(
       observer => {this.getAllRestaurants()},
       error => {console.log('Aggiunta andata male')},
       () => {console.log('Nuovo Piatto aggiunto!')})
   }
+
 
   ngOnDestroy(): void {
     this.restaurantSubscription?.unsubscribe();

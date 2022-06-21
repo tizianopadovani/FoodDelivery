@@ -19,7 +19,7 @@ export class RestaurantService {
     return this.http.post<Restaurant>('http://localhost:3000/Restaurants', newRestaurant);
   }
 
-  patchRestaurantsDish(newDish : Menu, index : number) : Observable<Restaurant> {
-    return this.http.patch<Restaurant>('http://localhost:3000/Restaurants' + index, newDish);
+  patchRestaurantsDish(newDish: Restaurant, index: number) : Observable<Restaurant> {
+    return this.http.patch<Restaurant>('http://localhost:3000/Restaurants/' + (index+1), newDish);
   }
 }
