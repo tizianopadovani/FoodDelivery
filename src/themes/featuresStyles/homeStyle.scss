@@ -1,0 +1,20 @@
+.home-container {
+  width: 100vw;
+  height: 85vh;
+  .home-image-background {
+    display: flex;
+    height: 85vh;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    background-image: url("~src/assets/img/1552639967158.jpeg");
+    background-size: cover;
+    .btn {
+      width: fit-content;
+      padding: 0.5rem 1rem;
+      background-color: greenyellow;
+      border: 2px solid black;
+      box-shadow: 0 0 5px 5px white;
+    }
+  }
+}
