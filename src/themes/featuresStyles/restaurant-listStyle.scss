@@ -1,0 +1,17 @@
+.restaurant-global-container{
+  width: 100%;
+  .restaurant-card-list {
+    .restaurant-table {
+      list-style: none;
+      border: 2px solid black;
+      padding: 3rem;
+      margin: 1rem;
+      border-radius: 20px;
+      height: fit-content;
+
+      .list-title {
+        background-color: greenyellow;
+      }
+    }
+  }
+}

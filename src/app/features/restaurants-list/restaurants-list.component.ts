@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Restaurant} from "../../core/models/restaurant";
 import {Subscription} from "rxjs";
 import {RestaurantService} from "../../core/services/restaurant-service/restaurant.service";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-restaurants-list',
@@ -14,6 +15,10 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
   restaurantSubscription : Subscription;
   postRestaurantSubscription : Subscription;
   patchRestaurantSubscription : Subscription;
+  restaurantForm: FormGroup;
+  isVisible: boolean = false;
+  isVisibleMenu: boolean = false;
+  menuForm: FormGroup;
 
 
 
@@ -21,6 +26,18 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllRestaurants();
+    this.restaurantForm = new FormGroup({
+      id: new FormControl (this.restaurantList?.length+1),
+      name: new FormControl(''),
+      address: new FormControl(''),
+      phone: new FormControl(''),
+    });
+    this.menuForm = new FormGroup({
+      id: new FormControl(''),
+      name: new FormControl(''),
+      ingredients: new FormControl(''),
+      price: new FormControl(''),
+    })
   }
 
   getAllRestaurants(){
@@ -33,33 +50,28 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
 
   postNewRestaurant() {
     const newRestaurant : Restaurant = {
-      id: this.restaurantList.length+1,
-      name: 'Nuovo Ristorante Paradiso',
-      menu: [
-        {
-          id: 1,
-          name: 'Nuovo Menu',
-          ingredients: 'Roba nuova',
-          price: 9.99
-        }
-      ],
-      address: 'Via Nuova',
-      phone: '06 0000 0000'
+      id: this.restaurantForm.get('id')?.value,
+      name: this.restaurantForm.get('name')?.value,
+      menu: [],
+      address: this.restaurantForm.get('address')?.value,
+      phone: this.restaurantForm.get('phone')?.value
     }
 
     this.postRestaurantSubscription = this.restaurantService.postNewRestaurant(newRestaurant).subscribe(
       observer => {this.getAllRestaurants()},
       error => {console.log('Aggiunta andata male')},
       () => {console.log('Nuovo Ristorante aggiunto!')})
+
+    this.restaurantForm.reset();
   }
 
   postNewDish(index : number) {
     const newDish =
       {
         id: this.restaurantList[index].menu.length + 1,
-        name: 'Nuovo Piatto',
-        ingredients: 'Nuovi Ingredienti',
-        price: 9.99
+        name: this.menuForm.get('name')?.value,
+        ingredients: this.menuForm.get('ingredients')?.value,
+        price: this.menuForm.get('price')?.value,
       }
     let {menu} = this.restaurantList[index];
     menu = [...menu, newDish];
@@ -68,13 +80,22 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
       observer => {this.getAllRestaurants()},
       error => {console.log('Aggiunta andata male')},
       () => {console.log('Nuovo Piatto aggiunto!')})
+
+    this.changeVisibilityMenu();
+    this.menuForm.reset();
   }
 
+  changeVisibility() {
+    this.isVisible = !this.isVisible;
+  }
+
+  changeVisibilityMenu() {
+    this.isVisibleMenu = !this.isVisibleMenu;
+  }
 
   ngOnDestroy(): void {
     this.restaurantSubscription?.unsubscribe();
     this.postRestaurantSubscription?.unsubscribe();
     this.patchRestaurantSubscription?.unsubscribe();
   }
-
 }

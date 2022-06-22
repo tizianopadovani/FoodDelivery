@@ -1,18 +1,38 @@
-<div>
-  <ul>
-    <li *ngFor="let restaurant of restaurantList; let index = index">
-      <div>
+<div class="restaurant-global-container">
+  <ul class="restaurant-card-list d-flex flex-wrap">
+    <li class="restaurant-table" *ngFor="let restaurant of restaurantList; let index = index">
+      <div class="text-center list-title">
         <h2>{{restaurant.name}}</h2>
       </div>
       <div>
-        <ul>
+        <ul *ngIf="!isVisibleMenu">
           <li *ngFor="let menu of restaurantList[index].menu">
             <h3>{{menu.name}}</h3>
             <p>{{menu.ingredients}}</p>
             <p>{{menu.price}} €</p>
           </li>
         </ul>
-        <button class="btn btn-success" (click) = "postNewDish(index)">Add Menu</button>
+        <div *ngIf="isVisibleMenu">
+          <form [formGroup]="menuForm" (ngSubmit)="postNewDish(index)">
+            <div class="form-outline mb-4">
+              <input type="text" id="name" formControlName="name" class="form-control" />
+              <label class="form-label" for="name">NAME</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input type="text" id="ingredients" formControlName="ingredients" class="form-control" />
+              <label class="form-label" for="ingredients">Ingredients</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input type="number" id="price" formControlName="price" class="form-control" />
+              <label class="form-label" for="price">Price</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Add</button>
+          </form>
+        </div>
+        <button class="btn btn-success" (click)="changeVisibilityMenu()">Add Dish</button>
       </div>
       <div>
         <p>{{restaurant.address}}</p>
@@ -21,6 +41,26 @@
     </li>
   </ul>
 </div>
+<button class="btn btn-primary" (click)="changeVisibility()"> Add Restaurant</button>
 <div>
- <button class="btn btn-primary" (click)="postNewRestaurant()"> Add Restaurant</button>
+  <div *ngIf="isVisible">
+    <form [formGroup]="restaurantForm" (ngSubmit)="postNewRestaurant()">
+        <div class="form-outline mb-4">
+          <input type="text" id="name" formControlName="name" class="form-control" />
+          <label class="form-label" for="name">NAME</label>
+        </div>
+
+        <div class="form-outline mb-4">
+          <input type="text" id="address" formControlName="address" class="form-control" />
+          <label class="form-label" for="address">Address</label>
+        </div>
+
+      <div class="form-outline mb-4">
+        <input type="text" id="phone" formControlName="phone" class="form-control" />
+        <label class="form-label" for="phone">Phone</label>
+      </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Add</button>
+    </form>
+  </div>
 </div>
